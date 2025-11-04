@@ -5,7 +5,7 @@ server {
   listen 80;
   listen [::]:80;
   
-  server_name wordpress.local www.wordpress.local;
+  server_name ${DOMAIN} www.${DOMAIN};
 
   location / {
     return 301 https://$host$request_uri;
@@ -16,17 +16,17 @@ server {
 # HTTPS server
 ##
 server {
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
+  listen 443 ssl;
+  listen [::]:443 ssl;
   
-  server_name wordpress.local www.wordpress.local;
+  server_name ${DOMAIN} www.${DOMAIN};
 
   root /var/www/html;
   index index.php;
 
   # --- SSL certs mounted via compose ---
-  ssl_certificate     /etc/certificates/wordpress.local.pem;
-  ssl_certificate_key /etc/certificates/wordpress.local-key.pem;
+  ssl_certificate     /etc/certificates/${DOMAIN}.pem;
+  ssl_certificate_key /etc/certificates/${DOMAIN}-key.pem;
 
   ssl_protocols TLSv1.2 TLSv1.3;
   ssl_prefer_server_ciphers on;
