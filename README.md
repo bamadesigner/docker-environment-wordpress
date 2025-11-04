@@ -6,6 +6,7 @@
 - [Setup local SSL certificate](#setup-local-ssl-certificate)
 - [Start Docker containers](#start-docker-containers)
 - [Stop Docker containers](#stop-docker-containers)
+- [Backup/export your database](#backupexport-your-database)
 
 ### Setup environment .env file
 
@@ -116,4 +117,14 @@ bash scripts/composer/require.sh [dependency] [version]
 
 ```bash
 bash scripts/composer/require.sh johnbillion/query-monitor
+```
+
+## Backup/export your database
+
+First, [run your containers in detached mode](#2-start-the-containers-in-detached-mode).
+
+Then run the following command to create a backup.sql file of your database:
+
+```bash
+bash scripts/database/backup.sh
 ```
