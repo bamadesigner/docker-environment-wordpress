@@ -4,23 +4,23 @@
 
 - [Setup your .env file](#setup-environment-env-file)
 - [Setup local SSL certificate](#setup-local-ssl-certificate)
-- [Start Docker](#start-docker)
+- [Start Docker containers](#start-docker-containers)
+- [Stop Docker containers](#stop-docker-containers)
 
 ### Setup environment .env file
 
-Copy `.env.example` to `.env` to use for build.
+Copy `.env.example` to `.env` to use for your containers. Modify .env variables as desired.
 
 ### Setup local SSL certificate
 
-Use [mkcert](https://github.com/FiloSottile/mkcert) to create locally-trusted development certificates.
+You can use [mkcert](https://github.com/FiloSottile/mkcert) to create locally-trusted development certificates.
 
-Open Terminal and run the following commands:
-
-Replace `wordpress.local` with your preferred local domain for development.
+Replace `wordpress.local` with your preferred local domain for development and run the following commands in your terminal.
 
 ```bash
 mkcert -install
-
+```
+```bash
 mkcert wordpress.local localhost 127.0.0.1 ::1
 ```
 
@@ -35,26 +35,57 @@ Place both of these files in your local repository with the following file path,
 
 The repo's `.docker/certificates` directory is ignored from .git and mounted in the Docker dev container.
 
-Add to hosts file
+Add the following to your local hosts file:
 
 ```
+# Local WordPress development
 127.0.0.1 wordpress.local
 ```
 
-## Start Docker
+## Start Docker containers
 
-Run the following command in your terminal to start the environment.
+Run one of the following commands to start the Docker environment.
 
-It will force-recreate the container and run the containers in "detached" mode.
+You can append any of the [available options for `docker compose up`](https://docs.docker.com/reference/cli/docker/compose/up/) to the end of the command.
+
+### 1. Start the containers
 
 ```bash
 bash scripts/docker/up.sh
 ```
 
-## Shut down Docker
+### 2. Start the containers in "detached" mode
+
+```bash
+bash scripts/docker/up.sh -d
+```
+
+### 3. Force-recreate the containers and start
+
+```bash
+bash scripts/docker/up.sh --force-recreate
+```
+
+### 4. Force re-create containers and start in "detached" mode
+
+```bash
+bash scripts/docker/up.sh --force-recreate -d
+```
+
+## Stop Docker containers
+
+You can append any of the [available options for `docker compose down`](https://docs.docker.com/reference/cli/docker/compose/down/) to the end of the command.
+
+### 1. Stop the containers
 
 ```bash
 bash scripts/docker/down.sh
+```
+
+### 2. Stop the containers and remove images
+
+```bash
+bash scripts/docker/down.sh --rmi
 ```
 
 ## Managing dependencies with Composer
