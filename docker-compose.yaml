@@ -18,7 +18,7 @@ services:
       retries: 6
 
   wordpress:
-    image: wordpress:6.8.3-php8.2-fpm
+    image: wordpress:6.8.3-php8.4-fpm
     depends_on:
       database:
         condition: service_healthy
