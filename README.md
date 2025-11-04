@@ -2,7 +2,7 @@
 
 - [Setup your .env file](#setup-environment-env-file)
 - [Define your local development domain](#define-your-local-development-domain)
-- [Setup local SSL certificate](#Create-local-ssl-certificates)
+- [Create local SSL certificates](#create-local-ssl-certificates)
 - [Start Docker containers](#start-docker-containers)
 - [Stop Docker containers](#stop-docker-containers)
 - [Manage dependencies with Composer](#manage-dependencies-with-composer)
@@ -33,6 +33,7 @@ If desired, replace `wordpress.local` with [your preferred local development dom
 ```bash
 mkcert -install
 ```
+
 ```bash
 # If desired, replace "wordpress.local" with your preferred domain.
 mkcert wordpress.local localhost 127.0.0.1 ::1
