@@ -1,0 +1,38 @@
+{
+  "name": "my-wp/site",
+  "description": "Composer-managed wp-content for WordPress in Docker",
+  "type": "project",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "require": {
+    "composer/installers": "^2.3",
+    "johnbillion/query-monitor": "^3.20",
+    "oomphinc/composer-installers-extender": "^2.0",
+    "wpackagist-plugin/classic-editor": "^1.6",
+    "wpackagist-theme/twentytwentyfive": "^1.3"
+  },
+  "extra": {
+    "installer-paths": {
+      "wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ],
+      "wp-content/mu-plugins/{$name}/": [
+        "type:wordpress-muplugin"
+      ],
+      "wp-content/themes/{$name}/": [
+        "type:wordpress-theme"
+      ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true,
+      "oomphinc/composer-installers-extender": true
+    },
+    "sort-packages": true
+  }
+}

@@ -1,0 +1,68 @@
+name: wordpress-stack
+
+services:
+  database:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  wordpress:
+    image: wordpress:6.8.3-php8.2-fpm
+    depends_on:
+      database:
+        condition: service_healthy
+      composer:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'DISALLOW_FILE_EDIT', true );  // no theme/plugin editor
+        define( 'DISALLOW_FILE_MODS', true );  // no UI installs/updates
+    volumes:
+      - wp_data:/var/www/html
+      - ./wp-content:/var/www/html/wp-content
+
+  composer:
+    image: composer:2
+    working_dir: /app
+    user: "${UID:-1000}:${GID:-1000}" # write as your host user
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+      COMPOSER_MEMORY_LIMIT: "-1"
+    command: ["install", "--no-interaction", "--prefer-dist"]
+    volumes:
+      - ./:/app
+      - ./wp-content:/app/wp-content
+  
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - wordpress
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - wp_data:/var/www/html:ro
+      - ./wp-content:/var/www/html/wp-content:ro
+      - ./.docker/certificates:/etc/certificates:ro
+      - ./.docker/nginx/wordpress.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  wp_data:
