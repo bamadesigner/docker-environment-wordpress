@@ -37,6 +37,7 @@ services:
       - wp_uploads:/var/www/html/wp-content/uploads
       - ./wp:/var/www/html
       - ./wp-content:/var/www/html/wp-content
+      - ../digital-governance-platform-wordpress-plugin:/var/www/digital-governance-platform
 
   composer:
     image: composer:2
@@ -49,6 +50,7 @@ services:
     volumes:
       - ./:/app
       - ./wp-content:/app/wp-content
+      - ../digital-governance-platform-wordpress-plugin:/app/../digital-governance-platform
   
   nginx:
     image: nginx:alpine

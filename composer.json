@@ -6,12 +6,20 @@
     {
       "type": "composer",
       "url": "https://wpackagist.org"
+    },
+    {
+      "type": "path",
+      "url": "../digital-governance-platform",
+      "options": {
+        "symlink": true
+      }
     }
   ],
   "require": {
     "composer/installers": "^2.3",
     "johnbillion/query-monitor": "^3.20",
     "oomphinc/composer-installers-extender": "^2.0",
+    "univmarcomm/digital-governance-platform": "@dev",
     "wpackagist-plugin/classic-editor": "^1.6",
     "wpackagist-theme/twentytwentyfive": "^1.3"
   },
@@ -34,5 +42,16 @@
       "oomphinc/composer-installers-extender": true
     },
     "sort-packages": true
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "@create-mu-plugin-symlink"
+    ],
+    "post-update-cmd": [
+      "@create-mu-plugin-symlink"
+    ],
+    "create-mu-plugin-symlink": [
+      "php scripts/create-mu-plugin-symlink.php"
+    ]
   }
 }
