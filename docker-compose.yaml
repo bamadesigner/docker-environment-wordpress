@@ -34,7 +34,8 @@ services:
         define( 'DISALLOW_FILE_EDIT', true );  // no theme/plugin editor
         define( 'DISALLOW_FILE_MODS', true );  // no UI installs/updates
     volumes:
-      - wp_data:/var/www/html
+      - wp_uploads:/var/www/html/wp-content/uploads
+      - ./wp:/var/www/html
       - ./wp-content:/var/www/html/wp-content
 
   composer:
@@ -59,7 +60,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - wp_data:/var/www/html:ro
+      - wp_uploads:/var/www/html/wp-content/uploads:ro
+      - ./wp:/var/www/html:ro
       - ./wp-content:/var/www/html/wp-content:ro
       - ./.docker/certificates:/etc/certificates:ro
       - ./.docker/nginx/wordpress.conf.template:/etc/nginx/conf.d/wordpress.conf.template:ro
@@ -69,4 +71,4 @@ services:
 
 volumes:
   db_data:
-  wp_data:
+  wp_uploads:
